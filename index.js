@@ -1,5 +1,14 @@
 const express = require('express');
 const cors = require('cors');
+const { graphqlHTTP } = require("express-graphql")
+const graphql = require('graphql');
+
+const { Mongoose, default: mongoose } = require('mongoose');
+
+const { GraphQLObjectType, GraphQLString, GraphQLSchema, buildSchema } = graphql
+ 
+
+
 
 require('dotenv').config();
 
@@ -51,7 +60,7 @@ async function run() {
             const query = {};
             const cursor = moviesCollection.find(query);
 
-            const count = await productsCollection.estimatedDocumentCount();
+            const count = await moviesCollection.estimatedDocumentCount();
             res.send({ count })
         })
 
