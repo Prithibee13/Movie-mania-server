@@ -21,16 +21,38 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
 
-    
+
 
         const moviesCollection = client.db("Movie-Mania").collection("Moies");
 
         app.get("/movies", async (req, res) => {
             const query = {};
-            const cursor = moviesCollection.find(query);
+            const cursor = productsCollection.find(query);
+
+
+            const page = parseInt(req.query.page);
+            const size = parseInt(req.query.size);
+
             let items;
-            items = await cursor.toArray();
+
+            if (page || size) {
+
+                items = await cursor.skip(page * size).limit(size).toArray();
+            }
+
+            else {
+                items = await cursor.toArray();
+            }
             res.send(items);
+        })
+
+
+        app.get('/itemsCount', async (req, res) => {
+            const query = {};
+            const cursor = moviesCollection.find(query);
+
+            const count = await productsCollection.estimatedDocumentCount();
+            res.send({ count })
         })
 
     } finally {
