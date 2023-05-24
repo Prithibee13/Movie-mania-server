@@ -27,7 +27,7 @@ async function run() {
 
         app.get("/movies", async (req, res) => {
             const query = {};
-            const cursor = productsCollection.find(query);
+            const cursor = moviesCollection.find(query);
 
 
             const page = parseInt(req.query.page);
