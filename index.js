@@ -33,6 +33,7 @@ async function run() {
 
 
         const moviesCollection = client.db("Movie-Mania").collection("Moies");
+        const trailerCollection = client.db("Movie-Mania").collection("trailer");
 
         app.get("/movies", async (req, res) => {
             const query = {};
@@ -62,6 +63,19 @@ async function run() {
 
             const count = await moviesCollection.estimatedDocumentCount();
             res.send({ count })
+        })
+
+
+        app.get('/trailer/:id', async(req,res)=>
+        {
+            const id = req.params.id;
+
+            const query = {movieID : id};
+
+            const cursor = trailerCollection.find(query);
+            const item = await cursor.toArray();
+
+            res.send(item)
         })
 
     } finally {
